@@ -71,13 +71,17 @@ export default function NoteCard({ note, onDelete, similarity }: NoteCardProps) 
       <div className="flex items-center justify-between text-sm text-gray-500">
         <div className="flex items-center gap-2 flex-wrap">
           {note.tags && note.tags.length > 0 && (
-            <div className="flex items-center gap-1">
-              <Tag className="w-3 h-3" />
-              <span>{note.tags.join(', ')}</span>
+            <div className="flex items-center gap-2 flex-wrap">
+              <Tag className="w-3 h-3 flex-shrink-0" />
+              {note.tags.map((tag, index) => (
+                <span key={index} className="px-2 py-0.5 bg-gray-100 text-gray-700 rounded text-xs">
+                  {tag}
+                </span>
+              ))}
             </div>
           )}
         </div>
-        <time dateTime={new Date(note.timestamp).toISOString()}>
+        <time dateTime={new Date(note.timestamp).toISOString()} className="flex-shrink-0">
           {format(note.timestamp, 'dd MMM yyyy, HH:mm', { locale: it })}
         </time>
       </div>

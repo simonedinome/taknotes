@@ -13,14 +13,33 @@ interface AnalysisResult {
 }
 
 export async function categorizeNote(text: string): Promise<AnalysisResult> {
-  const prompt = `Analyze this note and provide JSON:
+  const prompt = `Analizza questa nota e fornisci un JSON con la categorizzazione.
+
+ISTRUZIONI:
+- category: scegli LA CATEGORIA PIÙ APPROPRIATA tra: Lavoro, Personale, Idee, Todo, Riflessioni, Progetti
+  * "Idee" per nuove idee, brainstorming, concetti creativi
+  * "Progetti" per progetti concreti o pianificazione
+  * "Lavoro" per attività lavorative
+  * "Todo" per liste di cose da fare
+  * "Riflessioni" per pensieri personali, journaling
+  * "Personale" per vita privata, famiglia, amici
+
+- tags: estrai 2-5 PAROLE CHIAVE SIGNIFICATIVE che rappresentano i concetti principali
+  * Usa sostantivi e termini tecnici rilevanti
+  * Evita parole comuni (avuto, nuovo, ecc.)
+  * Preferisci termini specifici e significativi
+  * Esempi: "AI", "machine-learning", "progetto", "meeting", "deadline"
+
+- sentiment: analizza il tono emotivo (positive, negative, neutral)
+
+FORMATO:
 {
-  "category": "one of: Lavoro, Personale, Idee, Todo, Riflessioni, Progetti",
-  "tags": ["tag1", "tag2", "tag3"],
+  "category": "Idee|Progetti|Lavoro|Todo|Riflessioni|Personale",
+  "tags": ["parola-chiave-1", "parola-chiave-2", "parola-chiave-3"],
   "sentiment": "positive|negative|neutral"
 }
 
-Note: "${text}"`;
+NOTA: "${text}"`;
 
   const response = await client.chat.completions.create({
     model: 'gpt-4o-mini',
